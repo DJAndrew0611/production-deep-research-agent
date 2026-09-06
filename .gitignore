@@ -35,3 +35,6 @@ evaluation/reports/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Internal improvement plans and iteration notes
+IMPROVEMENT_*
