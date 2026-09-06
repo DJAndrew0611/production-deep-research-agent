@@ -1,0 +1,50 @@
+name: Agent Production CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Regression & Benchmark Gate (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Sanity & Import Verification
+      run: |
+        python -c "from evaluation.runner import run_offline_benchmark; print('Runner import OK')"
+        python -c "from evaluation.mock_services import MockLLMExtractor; print('Mock import OK')"
+        python -c "from core.observability import setup_logger; print('Observability import OK')"
+        python -c "from core.rag import SemanticRetriever; print('RAG import OK')"
+
+    - name: Run Test Suite with Coverage Gate
+      run: |
+        pytest tests/ -v --cov=. --cov-report=xml --cov-report=term-missing
+
+    - name: Run Authentic Differential Offline Benchmark Gate
+      run: |
+        python -m evaluation.runner
+
+    - name: Run E2E System Integration Verification
+      run: |
+        python verify_system_e2e.py

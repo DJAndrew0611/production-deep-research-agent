@@ -1,0 +1,17 @@
+[run]
+source = .
+omit =
+    tests/*
+    test_*.py
+    verify_system_e2e.py
+    .venv/*
+    venv/*
+
+[report]
+show_missing = true
+fail_under = 70
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if __name__ == .__main__
+    raise NotImplementedError

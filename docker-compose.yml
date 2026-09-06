@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  deep-research-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: deep-research-agent
+    ports:
+      - "8501:8501"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY:-}
+    volumes:
+      # Persist SQLite database across container restarts
+      - research_data:/app/data
+      # Mount .env file for credentials
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  research_data:
+    driver: local

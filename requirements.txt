@@ -1,0 +1,12 @@
+# Core framework & model dependencies
+openai-agents
+pydantic>=2.0
+numpy>=1.20
+streamlit
+firecrawl
+firecrawl-py
+
+# Dev, test & CI dependencies
+pytest>=7.0
+pytest-asyncio>=0.21
+pytest-cov>=4.0

@@ -1,0 +1,37 @@
+# Python byte-code, caches, and test artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.log
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Secrets and local configurations
+.env
+.env.*
+!.env.example
+config.json
+.config.json
+
+# SQLite databases, WAL, SHM, and runtime persistence
+*.db
+*.db-wal
+*.db-shm
+data/*.db*
+test_research_history/
+research_history/
+evaluation/reports/
+
+# IDE and OS artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
