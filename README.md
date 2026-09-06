@@ -12,11 +12,12 @@ A **production-grade, evidence-first deep research system** with dual-layer veri
 |:----------|:-------------|:---------------|
 | **Claim-Evidence Data Model** (`schemas.py`, 391 lines) | Pydantic v2 schemas with `Claim`, `EvidenceSource`, `EvidenceCorpus`, temporal validity (`ValidTime`), stance tracking, and `extra="forbid"` | Transforms unstructured LLM output into verifiable structured assertions |
 | **Dual-Layer Verification Engine** (`core/agents/verification_agent.py`) | Deterministic Python rule engine that overrides LLM verification proposals — LLM proposes, rules dispose | Eliminates sycophantic self-verification (the #1 failure mode of LLM agents) |
-| **Memory Quarantine + Differential Benchmark** (`evaluation/`, `storage.py`) | Quarantine lifecycle for learned rules, dual-branch regression testing with 5 quantitative gates | Prevents model regression from untested feedback |
-| **SQLite WAL Storage + Immutable Versioning** (`storage.py`, 840 lines) | Full relational persistence with WAL mode, append-only report revisions with parent pointers, atomic rollback | Production-grade state management replacing fragile JSON files |
-| **Production Resilience Framework** (`core/context.py`, `core/resilience.py`) | Circuit breaker (3-state FSM), exponential backoff with jitter, per-stage timeouts, token/cost/call budgets | Prevents cascading API failures and runaway costs |
+| **Memory Quarantine + Differential Benchmark** (`evaluation/`, `storage.py`) | Quarantine lifecycle for learned rules, dual-branch regression testing with 5 quantitative gates (12 adversarial cases) | Prevents model regression from untested feedback (False Corroboration = 0%) |
+| **SQLite WAL Storage + Immutable Versioning** (`storage.py`, 910 lines) | Full relational persistence with WAL mode, append-only report revisions with parent pointers, Verdict Diff tracking, atomic rollback | Production-grade state management replacing fragile JSON files |
+| **MCP (Model Context Protocol) Adapter** (`core/tools/mcp_tools.py`) | Async JSON-RPC 2.0 stdio client & tool adapter with graceful fallback to native Firecrawl search | Standardized tool integration compatible with modern agent standards |
+| **Production Resilience Framework** (`core/context.py`, `core/resilience.py`) | Circuit breaker (3-state FSM), exponential backoff with jitter, per-stage timeouts, 3D budget guards (token/call/cost) | Prevents cascading API failures and runaway costs |
 | **Structured Observability** (`core/observability.py`) | JSON structured logging with `StageTracer` context manager, pipeline summary emission | Production-grade debugging and monitoring support |
-| **Comprehensive Test Suite** (`tests/`, 12+ files, ~1,500 lines) | Unit tests covering schemas, state machines, security, citation validation, differential regression, and more | Validates system correctness under adversarial conditions |
+| **Comprehensive Test Suite** (`tests/`, 13 files, 60 tests) | 60 unit & integration tests covering schemas, state machines, security, citation validation, differential regression | Validates system correctness under adversarial conditions (100% pass) |
 
 ### Architecture Diagram
 
