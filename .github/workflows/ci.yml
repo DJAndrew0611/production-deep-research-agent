@@ -39,7 +39,7 @@ jobs:
 
     - name: Run Test Suite with Coverage Gate
       run: |
-        pytest tests/ -v --cov=. --cov-report=xml --cov-report=term-missing
+        python -m pytest tests/ -v --cov=. --cov-report=xml --cov-report=term-missing
 
     - name: Run Authentic Differential Offline Benchmark Gate
       run: |
